@@ -64,7 +64,6 @@ button {
 
 #noBtn {
     background: #ddd;
-    position: absolute;
 }
 
 .result {
@@ -100,69 +99,57 @@ button {
     <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbDUzOGt6MmYyMHFtNWU5ZnhkMmtjaml1am51Zmo2d2Z0NHgzeXh4eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xR5cPyPoL5HVXSphqA/giphy.gif">
 </div>
 
-<script>
+<<script>
 
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const result = document.getElementById("result");
 const main = document.getElementById("main");
-const buttonsArea = document.querySelector(".buttons");
 
-let firstMove = false;
+let isMoving = false;
 
 yesBtn.addEventListener("click", () => {
     main.style.display = "none";
     result.style.display = "block";
 });
 
-function isOverlapping(rect1, rect2) {
-    return !(
-        rect1.right < rect2.left ||
-        rect1.left > rect2.right ||
-        rect1.bottom < rect2.top ||
-        rect1.top > rect2.bottom
-    );
-}
-
 function moveButton() {
 
-    if (!firstMove) {
-        firstMove = true;
-        noBtn.style.position = "absolute";
+    if (!isMoving) {
+        isMoving = true;
+        noBtn.style.position = "fixed";
     }
-
-    const areaWidth = buttonsArea.clientWidth;
-    const areaHeight = buttonsArea.clientHeight;
 
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
 
-    const maxX = areaWidth - btnWidth;
-    const maxY = areaHeight - btnHeight;
+    const yesRect = yesBtn.getBoundingClientRect();
+
+    const padding = 20;
 
     let randomX, randomY;
     let overlap;
 
     do {
-        randomX = Math.random() * maxX;
-        randomY = Math.random() * maxY;
+        randomX = Math.random() * (window.innerWidth - btnWidth - padding);
+        randomY = Math.random() * (window.innerHeight - btnHeight - padding);
 
-        noBtn.style.left = randomX + "px";
-        noBtn.style.top = randomY + "px";
-
-        const noRect = noBtn.getBoundingClientRect();
-        const yesRect = yesBtn.getBoundingClientRect();
-
-        overlap = isOverlapping(noRect, yesRect);
+        overlap = (
+            randomX < yesRect.right &&
+            randomX + btnWidth > yesRect.left &&
+            randomY < yesRect.bottom &&
+            randomY + btnHeight > yesRect.top
+        );
 
     } while (overlap);
 
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
 }
 
-// mobile + desktop
-noBtn.addEventListener("touchstart", moveButton);
-noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("click", moveButton);
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
 
 </script>
 
