@@ -2,93 +2,97 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Will You Be My Valentine?</title>
 
 <style>
-    body {
-        margin: 0;
-        background: white;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: Arial, sans-serif;
-        overflow: hidden;
-        position: relative;
-    }
 
-    .heart {
-        font-size: 80px;
-        animation: pulse 1.2s infinite;
-    }
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: url('https://wallpapers.com/images/high/rapunzel-flynn-under-lantern-sky-cd5swe5fofy2lqhm.webp') no-repeat center center/cover;
+}
 
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.2); }
-        100% { transform: scale(1); }
-    }
+.container {
+    text-align: center;
+    background: rgba(255,255,255,0.9);
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    position: relative;
+}
 
-    h1 {
-        margin-top: 20px;
-        font-size: 28px;
-    }
+.main-gif {
+    width: 160px;
+    max-width: 70%;
+}
 
-    .buttons {
-        margin-top: 30px;
-        position: relative;
-    }
+h1 {
+    font-size: 22px;
+    margin: 20px 0;
+}
 
-    button {
-        padding: 12px 25px;
-        font-size: 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        position: absolute;
-    }
+.buttons {
+    position: relative;
+    height: 120px;
+}
 
-    #yesBtn {
-        background-color: #ff4d6d;
-        color: white;
-        left: -60px;
-    }
+button {
+    padding: 12px 22px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-    #noBtn {
-        background-color: #ccc;
-        color: black;
-        left: 60px;
-    }
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+}
 
-    .result {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-    }
+#noBtn {
+    background: #ddd;
+    position: absolute;
+}
 
-    .result img {
-        width: 300px;
-        margin-top: 20px;
-        border-radius: 12px;
-    }
+.result {
+    display: none;
+}
+
+.result img {
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+    border-radius: 12px;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="main">
-    <div class="heart">❤️</div>
-    <h1>Will you be my Valentine</h1>
+<div class="container" id="main">
+    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdTdvNjYzMmN4YzQ0amk3NTNkcnU3aWs1dG82aHR3eDRlODJpNHVrOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/naAaDvbAoOYdW/giphy.gif" class="main-gif">
+
+    <h1>Will you be my Valentina? 💖</h1>
 
     <div class="buttons">
         <button id="yesBtn">SIIIM 💘</button>
-        <button id="noBtn">NÃO 🙄</button>
+        <button id="noBtn">NÃO 😒</button>
     </div>
 </div>
 
-<div class="result" id="result">
-    <h1>ELA DISSE SIIIIIIIM 😍💞</h1>
-    <img src="https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" alt="romantic gif">
+<div class="container result" id="result">
+    <h1>ELA DISSE SIIIIIM 😍💞</h1>
+
+    <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbDUzOGt6MmYyMHFtNWU5ZnhkMmtjaml1am51Zmo2d2Z0NHgzeXh4eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xR5cPyPoL5HVXSphqA/giphy.gif">
 </div>
 
 <script>
@@ -96,20 +100,25 @@
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const result = document.getElementById("result");
-const main = document.querySelector(".main");
+const main = document.getElementById("main");
 
 yesBtn.addEventListener("click", () => {
     main.style.display = "none";
-    result.style.display = "flex";
+    result.style.display = "block";
 });
 
-noBtn.addEventListener("mouseover", moveButton);
-noBtn.addEventListener("click", moveButton);
+// deixa o botão absoluto na tela
+noBtn.style.position = "fixed";
 
 function moveButton() {
-    const padding = 100;
-    const maxX = window.innerWidth - padding;
-    const maxY = window.innerHeight - padding;
+
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+
+    const padding = 20; // margem de segurança
+
+    const maxX = window.innerWidth - btnWidth - padding;
+    const maxY = window.innerHeight - btnHeight - padding;
 
     const randomX = Math.random() * maxX;
     const randomY = Math.random() * maxY;
@@ -118,7 +127,13 @@ function moveButton() {
     noBtn.style.top = randomY + "px";
 }
 
+// move quando tenta clicar ou encostar
+noBtn.addEventListener("touchstart", moveButton);
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("click", moveButton);
+
 </script>
+
 
 </body>
 </html>
