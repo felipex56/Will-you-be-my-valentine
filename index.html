@@ -107,7 +107,7 @@ const yesBtn = document.getElementById("yesBtn");
 const result = document.getElementById("result");
 const main = document.getElementById("main");
 
-let isMoving = false;
+let moving = false;
 
 yesBtn.addEventListener("click", () => {
     main.style.display = "none";
@@ -116,33 +116,31 @@ yesBtn.addEventListener("click", () => {
 
 function moveButton() {
 
-    if (!isMoving) {
-        isMoving = true;
-        noBtn.style.position = "absolute";
+    if (!moving) {
+        moving = true;
+        noBtn.style.position = "fixed";
     }
-
-    const containerRect = main.getBoundingClientRect();
-    const yesRect = yesBtn.getBoundingClientRect();
 
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
+
+    const yesRect = yesBtn.getBoundingClientRect();
+
+    const padding = 20;
 
     let randomX, randomY;
     let overlap;
 
     do {
 
-        randomX = Math.random() * (containerRect.width - btnWidth);
-        randomY = Math.random() * (containerRect.height - btnHeight);
-
-        const futureLeft = containerRect.left + randomX;
-        const futureTop = containerRect.top + randomY;
+        randomX = Math.random() * (window.innerWidth - btnWidth - padding);
+        randomY = Math.random() * (window.innerHeight - btnHeight - padding);
 
         overlap = (
-            futureLeft < yesRect.right &&
-            futureLeft + btnWidth > yesRect.left &&
-            futureTop < yesRect.bottom &&
-            futureTop + btnHeight > yesRect.top
+            randomX < yesRect.right &&
+            randomX + btnWidth > yesRect.left &&
+            randomY < yesRect.bottom &&
+            randomY + btnHeight > yesRect.top
         );
 
     } while (overlap);
@@ -152,8 +150,8 @@ function moveButton() {
 }
 
 noBtn.addEventListener("click", moveButton);
-noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("touchstart", moveButton);
+noBtn.addEventListener("mouseover", moveButton);
 
 </script>
 
