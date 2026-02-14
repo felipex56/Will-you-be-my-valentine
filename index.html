@@ -40,7 +40,11 @@ h1 {
 
 .buttons {
     position: relative;
-    height: 120px;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 button {
@@ -49,7 +53,7 @@ button {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s ease;
 }
 
 #yesBtn {
@@ -81,7 +85,7 @@ button {
 <div class="container" id="main">
     <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdTdvNjYzMmN4YzQ0amk3NTNkcnU3aWs1dG82aHR3eDRlODJpNHVrOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/naAaDvbAoOYdW/giphy.gif" class="main-gif">
 
-    <h1>Will you be my Valentina? 💖</h1>
+    <h1>Will you be my Valentine? 💖</h1>
 
     <div class="buttons">
         <button id="yesBtn">SIIIM 💘</button>
@@ -101,24 +105,23 @@ const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const result = document.getElementById("result");
 const main = document.getElementById("main");
+const buttonsArea = document.querySelector(".buttons");
 
 yesBtn.addEventListener("click", () => {
     main.style.display = "none";
     result.style.display = "block";
 });
 
-// deixa o botão absoluto na tela
-noBtn.style.position = "fixed";
-
 function moveButton() {
+
+    const areaWidth = buttonsArea.clientWidth;
+    const areaHeight = buttonsArea.clientHeight;
 
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
 
-    const padding = 20; // margem de segurança
-
-    const maxX = window.innerWidth - btnWidth - padding;
-    const maxY = window.innerHeight - btnHeight - padding;
+    const maxX = areaWidth - btnWidth;
+    const maxY = areaHeight - btnHeight;
 
     const randomX = Math.random() * maxX;
     const randomY = Math.random() * maxY;
@@ -127,13 +130,12 @@ function moveButton() {
     noBtn.style.top = randomY + "px";
 }
 
-// move quando tenta clicar ou encostar
+// Mobile + Desktop
 noBtn.addEventListener("touchstart", moveButton);
 noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("click", moveButton);
 
 </script>
-
 
 </body>
 </html>
