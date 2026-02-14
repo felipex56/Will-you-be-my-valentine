@@ -19,7 +19,8 @@ body {
 
 .container {
     text-align: center;
-    background: rgba(255,255,255,0.9);
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(6px);
     padding: 30px;
     border-radius: 20px;
     width: 90%;
@@ -40,7 +41,7 @@ h1 {
 
 .buttons {
     position: relative;
-    height: 140px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -107,12 +108,28 @@ const result = document.getElementById("result");
 const main = document.getElementById("main");
 const buttonsArea = document.querySelector(".buttons");
 
+let firstMove = false;
+
 yesBtn.addEventListener("click", () => {
     main.style.display = "none";
     result.style.display = "block";
 });
 
+function isOverlapping(rect1, rect2) {
+    return !(
+        rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom
+    );
+}
+
 function moveButton() {
+
+    if (!firstMove) {
+        firstMove = true;
+        noBtn.style.position = "absolute";
+    }
 
     const areaWidth = buttonsArea.clientWidth;
     const areaHeight = buttonsArea.clientHeight;
@@ -123,14 +140,26 @@ function moveButton() {
     const maxX = areaWidth - btnWidth;
     const maxY = areaHeight - btnHeight;
 
-    const randomX = Math.random() * maxX;
-    const randomY = Math.random() * maxY;
+    let randomX, randomY;
+    let overlap;
 
-    noBtn.style.left = randomX + "px";
-    noBtn.style.top = randomY + "px";
+    do {
+        randomX = Math.random() * maxX;
+        randomY = Math.random() * maxY;
+
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
+
+        const noRect = noBtn.getBoundingClientRect();
+        const yesRect = yesBtn.getBoundingClientRect();
+
+        overlap = isOverlapping(noRect, yesRect);
+
+    } while (overlap);
+
 }
 
-// Mobile + Desktop
+// mobile + desktop
 noBtn.addEventListener("touchstart", moveButton);
 noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("click", moveButton);
